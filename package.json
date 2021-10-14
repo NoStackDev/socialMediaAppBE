@@ -1,0 +1,31 @@
+{
+  "name": "socialmediaappbe",
+  "version": "1.0.0",
+  "description": "social media app backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NoStackDev/socialMediaAppBE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NoStackDev/socialMediaAppBE/issues"
+  },
+  "homepage": "https://github.com/NoStackDev/socialMediaAppBE#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cloudinary": "^1.27.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "mongoose": "^6.0.10",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.3",
+    "nodemon": "^2.0.13"
+  }
+}
