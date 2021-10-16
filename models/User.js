@@ -24,12 +24,24 @@ const UserSchema = new mongoose.Schema({
         default: ""
     },
     coverPic: {
-        type:String,
+        type: String,
         default: ""
     },
-    comments: [{
+    desc: {
+        type: String,
+        default: ""
+    },
+    location: {
+        type: String,
+        default: ""
+    },
+    posts: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment"
+        ref: "Post"
+    }],
+    likedPosts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post"
     }],
     followers: [{
         type: mongoose.Schema.Types.ObjectId,

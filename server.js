@@ -1,17 +1,13 @@
 const express = require('express')
-const dotenv = require('dotenv')
 const helmet = require('helmet')
 const morgan = require('morgan')
 
+const config = require('./config')
 const connectDb = require('./db/db')
 
 const userRoute = require('./routes/userRoute')
+const postRoute = require('./routes/postRoute')
 
-
-dotenv.config()
-
-// PORT
-const PORT = process.env.PORT || '8000'
 
 const app = express()
 
@@ -23,10 +19,11 @@ app.use(helmet())
 
 // routes
 app.use('/api', userRoute)
+app.use('/api', postRoute)
 
-app.listen(PORT, () => {
+app.listen(config.PORT, () => {
     connectDb()
-    console.log(`backend server is up and running on port ${PORT}`)
+    console.log(`backend server is up and running on port ${config.PORT}`)
 })
 
 
