@@ -11,7 +11,6 @@ const postSchema = mongoose.Schema({
     },
     comment: {
         type: String,
-        min: 1,
         required: true
     },
     likes: {
@@ -30,6 +29,10 @@ const postSchema = mongoose.Schema({
         type: Boolean,
         default: false
     },
+    repostOf: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post'
+    },
     isReply: {
         type: Boolean,
         default: false
@@ -37,6 +40,10 @@ const postSchema = mongoose.Schema({
     replyTo: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 }, { timestamps: true })
 
