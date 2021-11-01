@@ -44,7 +44,7 @@ const getUser = async (req, res) => {
 // get users
 const getUsers = async (req, res) => {
     try {
-        const users = await User.find({})
+        let users = await User.find({})
         
         if (users.length === 0) {
             res.status(404).json({ "message": "there are no users" })
@@ -105,12 +105,16 @@ const deleteUser = async (req, res) => {
     } catch(err) { res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
 }
 
-// follow a user
+// follow/unfollow a user
 const followUser = async (req, res) => {
     try {
         const { followedUserId } = req.body
         const user = await User.findById(req.params.id)
         const followedUser = await User.findById(followedUserId)
+
+        if (user._id.toString() === followedUser._id.toString()) {
+            res.status(200).json({ "message": "can't follow or unfollow self" })
+        }
 
         if (!followedUser || !user) {
             res.status(404).json({ "message": "user does not exist" })
@@ -120,8 +124,13 @@ const followUser = async (req, res) => {
             res.status(200).json({ "message": "already following user" })
         }
 
-        user.following.push(followedUser._id)
-        followedUser.followers.push(user._id)
+        if (!user.following.includes(followedUser._id)) {
+            user.following.push(followedUser._id)
+            followedUser.followers.push(user._id)
+        } else {
+        user.following.pull(followedUser._id)
+        followedUser.followers.pull(user._id)
+        }
 
         const { password, ...data } = user._doc
         await user.save()
@@ -131,33 +140,6 @@ const followUser = async (req, res) => {
     } catch(err) { res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
 }
 
-// unfollow a user
-const unfollowUser = async (req, res) => {
-    try {
-        const { unfollowedUserId } = req.body
-        const user = await User.findById(req.params.id)
-        const unfollowedUser = await User.findById(unfollowedUserId)
-
-        if (!unfollowedUser || !user) {
-            res.status(404).json({ "message": "user does not exist" })
-        }
-
-        if (!user.following.includes(unfollowedUser._id)) {
-            res.status(200).json({ "message": "you aren't following this user" })
-        }
-
-        const { password, ...data } = user._doc
-
-        user.following.pull(unfollowedUser._id)
-        unfollowedUser.followers.pull(user._id)
-        await user.save()
-        await unfollowedUser.save()
-
-        res.status(200).json({ "message": "success", data })
-    } catch(err) { res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
-}
-
-
 module.exports = {
     createUser,
     login,
@@ -166,5 +148,4 @@ module.exports = {
     updateUser,
     deleteUser,
     followUser,
-    unfollowUser
 }

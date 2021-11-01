@@ -112,6 +112,10 @@ const likePost = async (req, res) => {
         if (!user) {
             res.status(404).json({ "message": "user does not exist" })
         }
+
+        if (user.posts.includes(post._id)) {
+            res.status(404).json({ "message": "request not allowed" }) 
+        }
         
         if (!user.likedPosts.includes(post._id)) {
             post.likes += 1
