@@ -10,8 +10,8 @@ const createUser = async (req, res) => {
         newUser.password = hash
         await newUser.save()
         const { password, ...data } = newUser._doc
-        res.status(200).json({ "message": "success", data })
-    } catch(err) { res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
+        return res.status(200).json({ "message": "success", data })
+    } catch(err) { return res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
 }
 
 // login user
@@ -21,10 +21,10 @@ const login = async (req, res) => {
 
         if (user && await bcrypt.compare(req.body.password, user.password)) {
             const { password, ...data } = user._doc
-            res.status(200).json({ "message": "success", data })
-        } else { res.status(404).json({ "message": "email or password is incorrect" }) }
+            return res.status(200).json({ "message": "success", data })
+        } else { return res.status(404).json({ "message": "email or password is incorrect" }) }
 
-    } catch (err) { res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
+    } catch (err) { return res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
 }
 
 // get single user
@@ -33,12 +33,12 @@ const getUser = async (req, res) => {
         const user = await User.findById(req.params.id)
 
         if (!user) {
-            res.status(404).json({ "message": "user does not exist" })
+            return res.status(404).json({ "message": "user does not exist" })
         } 
 
         const { password, ...data } = user._doc
-        res.status(200).json({ "message": "success", data })
-    } catch(err) { res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
+        return res.status(200).json({ "message": "success", data })
+    } catch(err) { return res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
 }
 
 // get users
@@ -47,7 +47,7 @@ const getUsers = async (req, res) => {
         let users = await User.find({})
         
         if (users.length === 0) {
-            res.status(404).json({ "message": "there are no users" })
+            return res.status(404).json({ "message": "there are no users" })
         } 
 
         const data = users.map( (user) => {
@@ -55,8 +55,8 @@ const getUsers = async (req, res) => {
             return others
         })
 
-        res.status(200).json({ "message": "success", data })
-    } catch(err) { res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
+        return res.status(200).json({ "message": "success", data })
+    } catch(err) { return res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
 }
 
 // update user
@@ -65,12 +65,12 @@ const updateUser = async (req, res) => {
         const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true })
 
         if (!user) {
-            res.status(404).json({ "message": "user does not exist" })
+            return res.status(404).json({ "message": "user does not exist" })
         } 
 
         const { password, ...data } = user._doc
-        res.status(200).json({ "message": "success", data })
-    } catch(err) { res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
+        return res.status(200).json({ "message": "success", data })
+    } catch(err) { return res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
 }
 
 // delete user
@@ -79,7 +79,7 @@ const deleteUser = async (req, res) => {
         const user = await User.findByIdAndDelete(req.params.id)
 
         if (!user) { 
-            res.status(404).json({ "message": "user does not exist" })
+            return res.status(404).json({ "message": "user does not exist" })
         } 
 
         if (user.following.length > 0) {
@@ -101,8 +101,8 @@ const deleteUser = async (req, res) => {
         }
 
         const { password, ...data } = user._doc
-        res.status(200).json({ "message": "success", data })
-    } catch(err) { res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
+        return res.status(200).json({ "message": "success", data })
+    } catch(err) { return res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
 }
 
 // follow/unfollow a user
@@ -113,15 +113,15 @@ const followUser = async (req, res) => {
         const followedUser = await User.findById(followedUserId)
 
         if (user._id.toString() === followedUser._id.toString()) {
-            res.status(200).json({ "message": "can't follow or unfollow self" })
+            return res.status(200).json({ "message": "can't follow or unfollow self" })
         }
 
         if (!followedUser || !user) {
-            res.status(404).json({ "message": "user does not exist" })
+            return res.status(404).json({ "message": "user does not exist" })
         }
 
         if (user.following.includes(followedUser._id)) {
-            res.status(200).json({ "message": "already following user" })
+            return res.status(200).json({ "message": "already following user" })
         }
 
         if (!user.following.includes(followedUser._id)) {
@@ -136,8 +136,8 @@ const followUser = async (req, res) => {
         await user.save()
         await followedUser.save()
 
-        res.status(200).json({ "message": "success", data }) 
-    } catch(err) { res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
+        return res.status(200).json({ "message": "success", data }) 
+    } catch(err) { return res.status(500).json({ "message": "unsuccessful", "error": err.message }) }
 }
 
 module.exports = {
