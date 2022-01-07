@@ -1,76 +1,85 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-
-const UserSchema = new mongoose.Schema({
-    firstname: {
-        type: String,
-        required: true,
-        min: 3,
-        max: 20,
+const UserSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: true,
+      min: 3,
+      max: 20,
     },
-    lastname: {
-        type: String,
-        required: true,
-        min: 3,
-        max: 20,
+    lastName: {
+      type: String,
+      required: true,
+      min: 3,
+      max: 20,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
     },
     dateOfBirth: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     password: {
-        type: String,
-        required: true,
-        min: 6
+      type: String,
+      required: true,
+      min: 6,
     },
     profilePic: {
-        type: String,
-        default: ""
+      type: String,
+      default: "",
     },
     coverPic: {
-        type: String,
-        default: ""
+      type: String,
+      default: "",
     },
     desc: {
-        type: String,
-        default: ""
+      type: String,
+      default: "",
     },
     country: {
-        type: String,
-        default: "",
-        required: true
+      type: String,
+      default: "",
+      required: true,
     },
     city: {
-        type: String,
-        default: "",
-        required: true
+      type: String,
+      default: "",
+      required: true,
     },
-    posts: [{
+    posts: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Post"
-    }],
-    likedPosts: [{
+        ref: "Post",
+      },
+    ],
+    likedPosts: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Post"
-    }],
-    followers: [{
+        ref: "Post",
+      },
+    ],
+    followers: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    }],
-    following: [{
+        ref: "User",
+      },
+    ],
+    following: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    }],
+        ref: "User",
+      },
+    ],
     isAdmin: {
-        type: Boolean,
-        default: false
-    }
-}, { timestamps: true })
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true }
+);
 
-
-module.exports = mongoose.model("User", UserSchema)
+module.exports = mongoose.model("User", UserSchema);
