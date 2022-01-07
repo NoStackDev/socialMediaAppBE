@@ -6,6 +6,8 @@ const createPost = async (req, res) => {
   try {
     const newPost = new Post(req.body);
     const user = await User.findById(req.body.userId);
+    const userName = user.firstName + " " + user.lastName;
+    newPost.userName = userName;
 
     if (!user) {
       return res.status(404).json({ message: "user does not exist" });
