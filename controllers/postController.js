@@ -8,6 +8,7 @@ const createPost = async (req, res) => {
     const user = await User.findById(req.body.userId);
     const userName = user.firstName + " " + user.lastName;
     newPost.userName = userName;
+    newPost.userProfilePic = user.profilePic;
 
     if (!user) {
       return res.status(404).json({ message: "user does not exist" });
