@@ -9,7 +9,7 @@ const postSchema = mongoose.Schema(
     },
     userName: {
       type: String,
-      required: true,
+      // required: true,
     },
     userProfilePic: {
       type: String,
@@ -19,7 +19,7 @@ const postSchema = mongoose.Schema(
     },
     comment: {
       type: String,
-      required: true,
+      // required: true,
     },
     likes: {
       type: Number,

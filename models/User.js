@@ -4,13 +4,13 @@ const UserSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
-      required: true,
+      // required: true,
       min: 3,
       max: 20,
     },
     lastName: {
       type: String,
-      required: true,
+      // required: true,
       min: 3,
       max: 20,
     },
@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema(
     },
     dateOfBirth: {
       type: String,
-      required: true,
+      // required: true,
     },
     password: {
       type: String,
@@ -43,12 +43,12 @@ const UserSchema = new mongoose.Schema(
     country: {
       type: String,
       default: "",
-      required: true,
+      // required: true,
     },
     city: {
       type: String,
       default: "",
-      required: true,
+      // required: true,
     },
     posts: [
       {
@@ -74,6 +74,10 @@ const UserSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    relationship: {
+      type: String,
+      default: null,
+    },
     isAdmin: {
       type: Boolean,
       default: false,

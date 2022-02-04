@@ -175,13 +175,11 @@ const likePost = async (req, res) => {
 const getTimeline = async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
-    const userPosts = await Post.find({ userId: user._id });
-    const followingPosts = await Promise.all(
-      user.following.map((followingId) => {
-        return Post.find({ userId: followingId });
-      })
-    );
-    const data = userPosts.concat(...followingPosts);
+    const usersIds = user.following;
+    console.log(usersIds);
+    data = await Post.find({ userId: [user._id, ...usersIds] }).sort({
+      createdAt: "desc",
+    });
     return res.status(200).json({ message: "success", data });
   } catch (err) {
     return res
